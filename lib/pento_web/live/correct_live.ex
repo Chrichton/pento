@@ -12,7 +12,7 @@ defmodule PentoWeb.CorrectLive do
         Your score: <%= @score %>
       </h2>
       <h2>
-        <a href="<%= live_patch "wrong_live", to: Routes.live_path(@socket, PentoWeb.WrongLive) %>" Restart Game</a>
+        <%= live_patch "Restart Game", to: Routes.live_path(@socket, PentoWeb.WrongLive) %>
       </h2>
     """
   end

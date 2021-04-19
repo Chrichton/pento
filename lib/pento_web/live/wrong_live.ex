@@ -7,7 +7,8 @@ defmodule PentoWeb.WrongLive do
        socket,
        score: 0,
        message: "Guess a number",
-       number_to_guess: Enum.random(1..10) |> Integer.to_string()
+       number_to_guess: Enum.random(1..10) |> Integer.to_string(),
+       number_guessed: false
      )}
   end
 
@@ -18,8 +19,12 @@ defmodule PentoWeb.WrongLive do
         <%= @message %>
       </h2>
       <h2>
-        <%= for n <- 1..10 do %>
-          <a href="#" phx-click="guess" phx-value-number="<%= n %>"><%= n %></a>
+        <%= if @number_guessed do %>
+          <%= live_patch "Restart Game", to: Routes.live_path(@socket, PentoWeb.WrongLive) %>
+        <% else %>
+          <%= for n <- 1..10 do %>
+            <a href="#" phx-click="guess" phx-value-number="<%= n %>"><%= n %></a>
+          <% end %>
         <% end %>
       </h2>
     """
@@ -27,28 +32,30 @@ defmodule PentoWeb.WrongLive do
 
   def handle_event("guess", %{"number" => guess}, socket) do
     if guess == socket.assigns.number_to_guess do
-      socket =
-        assign(
-          socket,
-          score: socket.assigns.score + 10
-        )
-
       {
         :noreply,
-        push_patch(socket, to: "/guessed")
+        assign(
+          socket,
+          message: "Your guess: #{guess} is correct. ",
+          score: socket.assigns.score + 10,
+          number_guessed: true
+        )
       }
     else
-      message = "Your guess: #{guess}. Wrong. Guess again. "
-      score = socket.assigns.score - 1
-
       {
         :noreply,
         assign(
           socket,
-          message: message,
-          score: score
+          message: "Your guess: #{guess}. Wrong. Guess again. ",
+          score: socket.assigns.score - 1
         )
       }
     end
+  end
+
+  def handle_params(_call, _expr, socket) do
+    if socket.assigns.number_guessed,
+      do: {:noreply, assign(socket, number_guessed: false)},
+      else: {:noreply, socket}
   end
 end
