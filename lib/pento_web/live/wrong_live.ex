@@ -53,7 +53,7 @@ defmodule PentoWeb.WrongLive do
     end
   end
 
-  def handle_params(_call, _expr, socket) do
+  def handle_params(_params, _uri, socket) do
     if socket.assigns.number_guessed,
       do: {:noreply, assign(socket, number_guessed: false)},
       else: {:noreply, socket}
