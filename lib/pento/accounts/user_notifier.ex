@@ -8,7 +8,12 @@ defmodule Pento.Accounts.UserNotifier do
   defp deliver(to, body) do
     require Logger
     Logger.debug(body)
-    {:ok, %{to: to, body: body}}
+    email = Pento.Email.welcome_email(to, body)
+
+    case Pento.Mailer.deliver_later(email) do
+      {:ok, %Bamboo.Email{to: [nil: to], text_body: body}} -> {:ok, %{to: to, body: body}}
+      error -> error
+    end
   end
 
   @doc """

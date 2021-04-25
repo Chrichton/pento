@@ -10,6 +10,14 @@ use Mix.Config
 config :pento,
   ecto_repos: [Pento.Repo]
 
+config :pento, Pento.Mailer,
+  adapter: Bamboo.SendGridAdapter,
+  api_key: "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",
+  hackney_opts: [
+    recv_timeout: :timer.minutes(1),
+    connect_timeout: :timer.minutes(1)
+  ]
+
 # Configures the endpoint
 config :pento, PentoWeb.Endpoint,
   url: [host: "localhost"],

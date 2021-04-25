@@ -28,6 +28,8 @@ config :pento, PentoWeb.Endpoint,
     ]
   ]
 
+config :pento, MyApp.Mailer, adapter: Bamboo.LocalAdapter
+
 # ## SSL Support
 #
 # In order to use HTTPS in development, a self-signed
