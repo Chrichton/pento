@@ -52,4 +52,13 @@ config :logger, level: :info
 
 # Finally import the config/prod.secret.exs which loads secrets
 # and configuration from environment variables.
+
+config :pento, Pento.Mailer,
+  adapter: Bamboo.SendGridAdapter,
+  api_key: {:system, "SENDGRID_API_KEY"},
+  hackney_opts: [
+    recv_timeout: :timer.minutes(1),
+    connect_timeout: :timer.minutes(1)
+  ]
+
 import_config "prod.secret.exs"
