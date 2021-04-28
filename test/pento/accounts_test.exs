@@ -96,17 +96,18 @@ defmodule Pento.AccountsTest do
   describe "change_user_registration/2" do
     test "returns a changeset" do
       assert %Ecto.Changeset{} = changeset = Accounts.change_user_registration(%User{})
-      assert changeset.required == [:password, :email]
+      assert changeset.required == [:username, :password, :email]
     end
 
     test "allows fields to be set" do
       email = unique_user_email()
       password = valid_user_password()
+      username = valid_username()
 
       changeset =
         Accounts.change_user_registration(
           %User{},
-          valid_user_attributes(email: email, password: password)
+          valid_user_attributes(email: email, password: password, username: username)
         )
 
       assert changeset.valid?
