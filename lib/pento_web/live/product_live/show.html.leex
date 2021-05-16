@@ -1,5 +1,7 @@
 <h1>Show Product</h1>
 
+<h2><%= @copyright %></h2>
+
 <%= if @live_action in [:edit] do %>
   <%= live_modal @socket, PentoWeb.ProductLive.FormComponent,
     id: @product.id,
