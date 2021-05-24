@@ -21,8 +21,6 @@ defmodule PentoWeb.ProductLive.FormComponent do
 
   defp handle_progress(:image, entry, socket) do
     if entry.done? do
-      IO.inspect(entry, label: "entry.done")
-
       path =
         consume_uploaded_entry(
           socket,
@@ -32,7 +30,7 @@ defmodule PentoWeb.ProductLive.FormComponent do
 
       {:noreply,
        socket
-       |> put_flash(:info, "file #{entry.client.name} uploaded")
+       |> put_flash(:info, "file #{entry.client_name} uploaded")
        |> update_changeset(:image_upload, path)}
     else
       {:noreply, socket}
