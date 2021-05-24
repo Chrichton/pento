@@ -30,13 +30,23 @@ defmodule PentoWeb.ProductLive.FormComponent do
 
       {:noreply,
        socket
-       |> put_flash(:info, "file #{entry.client_name} uploaded")}
+       |> put_flash(:info, "file #{entry.client_name} uploaded")
+       |> update_changeset(:image_upload, path)}
     else
       {:noreply, socket}
     end
   end
 
   defp upload_static_file(%{path: path}, socket) do
+    dest = Path.join("priv/static/images", Path.basename(path))
+    File.cp!(path, dest)
+    Routes.static_path(socket, "/images/#{Path.basename(dest)}")
+  end
+
+  @spec update_changeset(Phoenix.LiveView.Socket.t(), atom, any) :: Phoenix.LiveView.Socket.t()
+  def update_changeset(%{assigns: %{changeset: changeset}} = socket, key, value) do
+    socket
+    |> assign(:changeset, Ecto.Changeset.put_change(changeset, key, value))
   end
 
   @impl true
