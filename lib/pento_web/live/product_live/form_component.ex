@@ -30,17 +30,13 @@ defmodule PentoWeb.ProductLive.FormComponent do
 
       {:noreply,
        socket
-       |> put_flash(:info, "file #{entry.client_name} uploaded")
-       |> update_changeset(:image_upload, path)}
+       |> put_flash(:info, "file #{entry.client_name} uploaded")}
     else
       {:noreply, socket}
     end
   end
 
   defp upload_static_file(%{path: path}, socket) do
-  end
-
-  defp update_changeset(socket, key, value) do
   end
 
   @impl true
